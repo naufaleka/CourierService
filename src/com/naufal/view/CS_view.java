@@ -47,8 +47,8 @@ public final class CS_view extends javax.swing.JFrame {
         txtNoTlpPenerima.setEnabled(aktifkan);
         jPanel2.setEnabled(aktifkan);
     }
-    
-    public void dataPaket(boolean aktifkan){
+
+    public void dataPaket(boolean aktifkan) {
         cbxJenis.setEnabled(aktifkan);
         txtKilogram.setEnabled(aktifkan);
         txtPanjang.setEnabled(aktifkan);
@@ -583,14 +583,19 @@ public final class CS_view extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-        System.out.println("YA : "+rbtYa.isSelected());
-        lblTotal.setText(""+csdao.getHitungPaket(cbxKotaPenerima.getSelectedItem().toString(), cbxLayanan.getSelectedItem().toString(), Integer.parseInt(txtKilogram.getText()), rbtYa.isSelected()));
+        System.out.println("YA : " + rbtYa.isSelected());
+        if (rbtYa.isSelected()) {
+            lblTotal.setText("" + csdao.getHitungPaket(cbxKotaPenerima.getSelectedItem().toString(), cbxLayanan.getSelectedItem().toString(), Integer.parseInt(txtKilogram.getText()), rbtYa.isSelected(), Double.parseDouble(txtHarga.getText())));
+        } else {
+            lblTotal.setText("" + csdao.getHitungPaket(cbxKotaPenerima.getSelectedItem().toString(), cbxLayanan.getSelectedItem().toString(), Integer.parseInt(txtKilogram.getText()), rbtYa.isSelected(), 0.0));
+
+        }
         btnBaru.setVisible(true);
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void rbtYaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtYaItemStateChanged
         // TODO add your handling code here:
-        if(rbtYa.isSelected()){
+        if (rbtYa.isSelected()) {
             txtHarga.setEnabled(true);
         } else {
             txtHarga.setEnabled(false);

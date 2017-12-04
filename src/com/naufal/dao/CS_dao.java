@@ -41,42 +41,45 @@ public class CS_dao {
         return csdao;
     }
 
-    public double getHitungPaket(String Tujuan, String paket, int Kg, boolean asuransi) {
+    public double getHitungPaket(String Tujuan, String paket, int Kg, boolean asuransi, double hargaBarang) {
         double hasilHitung = 0.0;
-        double nilaiAsuransi = 0.0;
+        double nilaiAsuransi = 0.03;
         for (CS_model cS_model : csdao) {
             if (cS_model.getKota().equalsIgnoreCase(Tujuan)) {
                 if (asuransi) {
+                    System.out.println("Asuransi");
                     switch (paket) {
                         case "Reguler":
                             hasilHitung = cS_model.getReguler() * Kg;
-                            nilaiAsuransi = hasilHitung * nilaiAsuransi;
+                            nilaiAsuransi = hargaBarang * nilaiAsuransi;
                             hasilHitung += nilaiAsuransi;
+                            System.out.println("Reguler");
                             break;
                         case "Ons":
                             hasilHitung = cS_model.getOns() * Kg;
-                            nilaiAsuransi = hasilHitung * nilaiAsuransi;
+                            nilaiAsuransi = hargaBarang * nilaiAsuransi;
                             hasilHitung += nilaiAsuransi;
                             break;
                         case "Hds":
                             hasilHitung = cS_model.getHds() * Kg;
-                            nilaiAsuransi = hasilHitung * nilaiAsuransi;
+                            nilaiAsuransi = hargaBarang * nilaiAsuransi;
                             hasilHitung += nilaiAsuransi;
                             break;
                         case "Trc":
                             hasilHitung = cS_model.getTrc() * Kg;
-                            nilaiAsuransi = hasilHitung * nilaiAsuransi;
+                            nilaiAsuransi = hargaBarang * nilaiAsuransi;
                             hasilHitung += nilaiAsuransi;
                             break;
                         case "Sds":
                             hasilHitung = cS_model.getSds() * Kg;
-                            nilaiAsuransi = hasilHitung * nilaiAsuransi;
+                            nilaiAsuransi = hargaBarang * nilaiAsuransi;
                             hasilHitung += nilaiAsuransi;
                             break;
                         default:
                             System.out.println("Data Paket tidak diketemukan...");
                     }
                 } else {
+                    System.out.println("Non Asuransi");
                     switch (paket) {
                         case "Reguler":
                             hasilHitung = cS_model.getReguler() * Kg;
