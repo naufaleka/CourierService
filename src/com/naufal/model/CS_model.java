@@ -119,7 +119,5 @@ public class CS_model {
     public String toString() {
 //        System.out.println("Kota "+this.getKota());
         return this.getKota();
-    }
-    
-    
+    } 
 }
