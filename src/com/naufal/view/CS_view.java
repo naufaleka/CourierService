@@ -7,7 +7,9 @@ package com.naufal.view;
 
 import com.naufal.dao.CS_dao;
 import com.naufal.model.CS_model;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
@@ -31,6 +33,9 @@ public final class CS_view extends javax.swing.JFrame {
         this.dataPaket(false);
         btnBaru.setVisible(false);
         txtHarga.setEnabled(false);
+        txtPanjang.setEnabled(false);
+        txtTinggi.setEnabled(false);
+        txtLebar.setEnabled(false);
         csp = csdao.getPaket(); // ambil paket masukan kedalam paket
         for (CS_model cS_model : csp) {
             cbxKotaAsal.addItem("" + cS_model);
@@ -51,12 +56,11 @@ public final class CS_view extends javax.swing.JFrame {
     public void dataPaket(boolean aktifkan) {
         cbxJenis.setEnabled(aktifkan);
         txtKilogram.setEnabled(aktifkan);
-        txtPanjang.setEnabled(aktifkan);
-        txtTinggi.setEnabled(aktifkan);
-        txtLebar.setEnabled(aktifkan);
         cbxLayanan.setEnabled(aktifkan);
+        checkBoxDimensi.setEnabled(aktifkan);
         rbtYa.setEnabled(aktifkan);
         rbtTidak.setEnabled(aktifkan);
+        rbtTidak.setSelected(true);
 //        txtHarga.setEnabled(aktifkan);
         cbxPembayaran.setEnabled(aktifkan);
         btnSubmit.setEnabled(aktifkan);
@@ -113,7 +117,6 @@ public final class CS_view extends javax.swing.JFrame {
         jLabel18 = new javax.swing.JLabel();
         txtKilogram = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         txtPanjang = new javax.swing.JTextField();
         txtLebar = new javax.swing.JTextField();
@@ -134,6 +137,7 @@ public final class CS_view extends javax.swing.JFrame {
         btnBaru = new javax.swing.JButton();
         jLabel29 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
+        checkBoxDimensi = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -300,13 +304,7 @@ public final class CS_view extends javax.swing.JFrame {
 
         jLabel14.setText("No. Paket             :");
 
-        lblPaket.setText("No. Paket");
-
         jLabel15.setText("Tanggal Kirim        :");
-
-        lbltgl.setText("tgl");
-
-        lbltujuan.setText("kota tujuan");
 
         jLabel16.setText("Kota Tujuan          :");
 
@@ -317,8 +315,6 @@ public final class CS_view extends javax.swing.JFrame {
         jLabel18.setText("Berat                     :");
 
         jLabel19.setText("Kg");
-
-        jLabel20.setText("Dimensi Barang");
 
         jLabel21.setText("Panjang");
 
@@ -366,6 +362,13 @@ public final class CS_view extends javax.swing.JFrame {
         lblTotal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblTotal.setText("Rp.");
 
+        checkBoxDimensi.setText("Dimensi Barang");
+        checkBoxDimensi.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                checkBoxDimensiItemStateChanged(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -378,16 +381,16 @@ public final class CS_view extends javax.swing.JFrame {
                             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbltgl, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblPaket))
-                        .addGap(180, 180, 180))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbltgl, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                            .addComponent(lblPaket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(108, 108, 108))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel16)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lbltujuan))
+                                .addComponent(lbltujuan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel17)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -397,10 +400,18 @@ public final class CS_view extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtKilogram, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel19))
+                                .addComponent(jLabel19)))
+                        .addGap(36, 36, 36))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnBaru)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSubmit)
+                        .addContainerGap())
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel20)
                                     .addComponent(txtPanjang, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
@@ -438,21 +449,13 @@ public final class CS_view extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel28)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbxPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(36, 36, 36))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnBaru)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSubmit))
+                                .addComponent(cbxPembayaran, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel29)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblTotal)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                                .addComponent(lblTotal))
+                            .addComponent(checkBoxDimensi))
+                        .addGap(0, 36, Short.MAX_VALUE))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -474,25 +477,23 @@ public final class CS_view extends javax.swing.JFrame {
                     .addComponent(jLabel17)
                     .addComponent(cbxJenis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(txtKilogram, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(checkBoxDimensi)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel18)
-                            .addComponent(txtKilogram, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel19))
+                        .addComponent(jLabel21)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel20)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel21)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txtPanjang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtTinggi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel23)
-                                .addGap(26, 26, 26))))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtPanjang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTinggi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel23)
+                        .addGap(26, 26, 26))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel24)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -520,7 +521,7 @@ public final class CS_view extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel29)
                     .addComponent(lblTotal))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(32, 32, 32)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSubmit)
                     .addComponent(btnBaru))
@@ -578,6 +579,12 @@ public final class CS_view extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "Mohon Melengkapi Data Penerima...", "Kesalahan", 2);
         } else {
             dataPaket(true);
+            Date dt = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat noPaket = new SimpleDateFormat("yyddMM");
+            lblPaket.setText("CS" + noPaket.format(dt));
+            lbltgl.setText(dateFormat.format(dt));
+            lbltujuan.setText("" + cbxKotaPenerima.getSelectedItem());
         }
     }//GEN-LAST:event_txtNoTlpPenerimaFocusLost
 
@@ -588,7 +595,6 @@ public final class CS_view extends javax.swing.JFrame {
             lblTotal.setText("" + csdao.getHitungPaket(cbxKotaPenerima.getSelectedItem().toString(), cbxLayanan.getSelectedItem().toString(), Integer.parseInt(txtKilogram.getText()), rbtYa.isSelected(), Double.parseDouble(txtHarga.getText())));
         } else {
             lblTotal.setText("" + csdao.getHitungPaket(cbxKotaPenerima.getSelectedItem().toString(), cbxLayanan.getSelectedItem().toString(), Integer.parseInt(txtKilogram.getText()), rbtYa.isSelected(), 0.0));
-
         }
         btnBaru.setVisible(true);
     }//GEN-LAST:event_btnSubmitActionPerformed
@@ -598,9 +604,22 @@ public final class CS_view extends javax.swing.JFrame {
         if (rbtYa.isSelected()) {
             txtHarga.setEnabled(true);
         } else {
+            txtHarga.setText("");
             txtHarga.setEnabled(false);
         }
     }//GEN-LAST:event_rbtYaItemStateChanged
+
+    private void checkBoxDimensiItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_checkBoxDimensiItemStateChanged
+        if (checkBoxDimensi.isSelected()) {
+            txtPanjang.setEnabled(true);
+            txtTinggi.setEnabled(true);
+            txtLebar.setEnabled(true);
+        } else {
+            txtPanjang.setEnabled(false);
+            txtTinggi.setEnabled(false);
+            txtLebar.setEnabled(false);
+        }
+    }//GEN-LAST:event_checkBoxDimensiItemStateChanged
 
     /**
      * @param args the command line arguments
@@ -646,6 +665,7 @@ public final class CS_view extends javax.swing.JFrame {
     private javax.swing.JComboBox cbxKotaPenerima;
     private javax.swing.JComboBox<String> cbxLayanan;
     private javax.swing.JComboBox<String> cbxPembayaran;
+    private javax.swing.JCheckBox checkBoxDimensi;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -658,7 +678,6 @@ public final class CS_view extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
