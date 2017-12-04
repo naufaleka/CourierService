@@ -104,4 +104,32 @@ public class CS_dao {
         }
         return hasilHitung;
     }
+
+    public double getHarga(String paket, String kota) {
+        double harga = 0.0;
+        for (CS_model cS_model : csdao) {
+            if (cS_model.getKota().equalsIgnoreCase(kota)) {
+                switch (paket) {
+                    case "Reguler":
+                        harga = cS_model.getReguler();
+                        break;
+                    case "Ons":
+                        harga = cS_model.getOns();
+                        break;
+                    case "Hds":
+                        harga = cS_model.getHds();
+                        break;
+                    case "Trc":
+                        harga = cS_model.getTrc();
+                        break;
+                    case "Sds":
+                        harga = cS_model.getSds();
+                        break;
+                    default:
+                        System.out.println("Data Paket tidak diketemukan...");
+                }
+            }
+        }
+        return harga;
+    }
 }
