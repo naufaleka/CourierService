@@ -7,11 +7,13 @@ package com.naufal.view;
 
 import com.naufal.dao.CS_dao;
 import com.naufal.model.CS_model;
+import com.naufal.model.Print_model;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.PrintJob;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,6 +26,7 @@ public final class CS_view extends javax.swing.JFrame {
      * Creates new form CS_view
      */
     CS_dao csdao = new CS_dao();
+    Print_model pm = new Print_model();
     List<CS_model> csp;
     //CS_model[] kota;
 
@@ -43,7 +46,7 @@ public final class CS_view extends javax.swing.JFrame {
             cbxKotaPenerima.addItem("" + cS_model);
         }
     }
-    
+
     public void Penerima(boolean aktifkan) {
         txtNamaPenerima.setEnabled(aktifkan);
         txtAlamatPenerima.setEnabled(aktifkan);
@@ -53,7 +56,7 @@ public final class CS_view extends javax.swing.JFrame {
         txtNoTlpPenerima.setEnabled(aktifkan);
         jPanel2.setEnabled(aktifkan);
     }
-    
+
     public void dataPaket(boolean aktifkan) {
         cbxJenis.setEnabled(aktifkan);
         txtKilogram.setEnabled(aktifkan);
@@ -163,6 +166,12 @@ public final class CS_view extends javax.swing.JFrame {
 
         jLabel5.setText("Kode Pos");
 
+        txtKodePosPengirim.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtKodePosPengirimFocusLost(evt);
+            }
+        });
+
         jLabel6.setText("Provinsi");
 
         txtNoTlpPengirim.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -240,6 +249,12 @@ public final class CS_view extends javax.swing.JFrame {
         jScrollPane2.setViewportView(txtAlamatPenerima);
 
         jLabel11.setText("Kode Pos");
+
+        txtKodePosPenerima.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtKodePosPenerimaFocusLost(evt);
+            }
+        });
 
         jLabel12.setText("Provinsi");
 
@@ -325,13 +340,37 @@ public final class CS_view extends javax.swing.JFrame {
 
         jLabel18.setText("Berat                     :");
 
+        txtKilogram.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtKilogramFocusLost(evt);
+            }
+        });
+
         jLabel19.setText("Kg");
 
         jLabel21.setText("Panjang");
 
+        txtPanjang.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtPanjangFocusLost(evt);
+            }
+        });
+
+        txtLebar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtLebarFocusLost(evt);
+            }
+        });
+
         jLabel22.setText("Cm");
 
         jLabel23.setText("Tinggi");
+
+        txtTinggi.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtTinggiFocusLost(evt);
+            }
+        });
 
         jLabel24.setText("Lebar");
 
@@ -359,6 +398,12 @@ public final class CS_view extends javax.swing.JFrame {
 
         jLabel27.setText("Harga Barang        :");
 
+        txtHarga.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtHargaFocusLost(evt);
+            }
+        });
+
         jLabel28.setText("Pembayaran          :");
 
         cbxPembayaran.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cash", "Debit", "Kredit" }));
@@ -371,6 +416,11 @@ public final class CS_view extends javax.swing.JFrame {
         });
 
         btnBaru.setText("Baru");
+        btnBaru.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBaruActionPerformed(evt);
+            }
+        });
 
         jLabel29.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel29.setText("Total Bayar           :");
@@ -594,39 +644,134 @@ public final class CS_view extends javax.swing.JFrame {
 
     private void txtNoTlpPengirimFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNoTlpPengirimFocusLost
         // TODO add your handling code here:
-        if (txtNamaPengirim.getText().isEmpty() || txtAlamarPengirim.getText().isEmpty() || txtKodePosPengirim.getText().isEmpty() || txtProvinsi.getText().isEmpty() || txtNoTlpPengirim.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(rootPane, "Mohon Melengkapi Data Pengirim...", "Kesalahan", 2);
+        if (!txtNoTlpPengirim.getText().matches("[0-9]*")) {
+            JOptionPane.showMessageDialog(rootPane, "Maaf Inputan No. Telepon Harus Berupa Angka");
+            txtNoTlpPengirim.setText("");
         } else {
-            Penerima(true);
+            if (txtNamaPengirim.getText().isEmpty() || txtAlamarPengirim.getText().isEmpty() || txtKodePosPengirim.getText().isEmpty() || txtProvinsi.getText().isEmpty() || txtNoTlpPengirim.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(rootPane, "Mohon Melengkapi Data Pengirim...", "Kesalahan", 2);
+            } else {
+                Penerima(true);
+            }
         }
     }//GEN-LAST:event_txtNoTlpPengirimFocusLost
 
     private void txtNoTlpPenerimaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNoTlpPenerimaFocusLost
         // TODO add your handling code here:
-        if (txtNamaPenerima.getText().isEmpty() || txtAlamatPenerima.getText().isEmpty() || txtKodePosPenerima.getText().isEmpty() || txtProvinsiPenerima.getText().isEmpty() || txtNoTlpPenerima.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(rootPane, "Mohon Melengkapi Data Penerima...", "Kesalahan", 2);
+        if (!txtNoTlpPenerima.getText().matches("[0-9]*")) {
+            JOptionPane.showMessageDialog(rootPane, "Maaf Inputan No. Telepon Harus Berupa Angka");
+            txtNoTlpPenerima.setText("");
         } else {
-            lblHarga.setEnabled(true);
-            lblHarga.setText(csdao.getHarga("Reguler", cbxKotaPenerima.getSelectedItem() + "") + "");
-            dataPaket(true);
-            Date dt = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            SimpleDateFormat noPaket = new SimpleDateFormat("yyddMM");
-            lblPaket.setText("CS" + noPaket.format(dt));
-            lbltgl.setText(dateFormat.format(dt));
-            lbltujuan.setText("" + cbxKotaPenerima.getSelectedItem());
+            if (txtNamaPenerima.getText().isEmpty() || txtAlamatPenerima.getText().isEmpty() || txtKodePosPenerima.getText().isEmpty() || txtProvinsiPenerima.getText().isEmpty() || txtNoTlpPenerima.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(rootPane, "Mohon Melengkapi Data Penerima...", "Kesalahan", 2);
+            } else {
+                lblHarga.setEnabled(true);
+                lblHarga.setText(csdao.getHarga("Reguler", cbxKotaPenerima.getSelectedItem() + "") + "");
+                dataPaket(true);
+                Date dt = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat noPaket = new SimpleDateFormat("yyddMM");
+                lblPaket.setText("CS" + noPaket.format(dt));
+                lbltgl.setText(dateFormat.format(dt));
+                lbltujuan.setText("" + cbxKotaPenerima.getSelectedItem());
+            }
         }
     }//GEN-LAST:event_txtNoTlpPenerimaFocusLost
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-        System.out.println("YA : " + rbtYa.isSelected());
-        if (rbtYa.isSelected()) {
-            lblTotal.setText("" + csdao.getHitungPaket(cbxKotaPenerima.getSelectedItem().toString(), cbxLayanan.getSelectedItem().toString(), Integer.parseInt(txtKilogram.getText()), rbtYa.isSelected(), Double.parseDouble(txtHarga.getText())));
+        if (!txtKilogram.getText().isEmpty()) {
+            System.out.println("YA : " + rbtYa.isSelected());
+            if (rbtYa.isSelected()) {
+                lblTotal.setText("" + csdao.getHitungPaket(cbxKotaPenerima.getSelectedItem().toString(), cbxLayanan.getSelectedItem().toString(), Integer.parseInt(txtKilogram.getText()), rbtYa.isSelected(), Double.parseDouble(txtHarga.getText())));
+                pm = new Print_model(txtNamaPengirim.getText(), cbxKotaAsal.getSelectedItem() + "", txtNamaPenerima.getText(), txtAlamatPenerima.getText(), txtNoTlpPengirim.getText(),
+                        cbxKotaPenerima.getSelectedItem() + "", txtNoTlpPenerima.getText(), txtProvinsiPenerima.getText(), lblPaket.getText(), lbltgl.getText(), cbxJenis.getSelectedItem() + "",
+                        lblHarga.getText(), txtKilogram.getText(), rbtYa.getText(), txtHarga.getText(), cbxPembayaran.getSelectedItem() + "", lblTotal.getText());
+            } else {
+                lblTotal.setText("" + csdao.getHitungPaket(cbxKotaPenerima.getSelectedItem().toString(), cbxLayanan.getSelectedItem().toString(), Integer.parseInt(txtKilogram.getText()), rbtYa.isSelected(), 0.0));
+                pm = new Print_model(txtNamaPengirim.getText(), cbxKotaAsal.getSelectedItem() + "", txtNamaPenerima.getText(), txtAlamatPenerima.getText(), txtNoTlpPengirim.getText(),
+                        cbxKotaPenerima.getSelectedItem() + "", txtNoTlpPenerima.getText(), txtProvinsiPenerima.getText(), lblPaket.getText(), lbltgl.getText(), cbxJenis.getSelectedItem() + "",
+                        lblHarga.getText(), txtKilogram.getText(), rbtTidak.getText(), "0", cbxPembayaran.getSelectedItem() + "", lblTotal.getText());
+            }
+            int hasil = JOptionPane.showConfirmDialog(rootPane, "Anda Ingin Cetak Resi?");
+            System.out.println("Hasil" + hasil);// juka yes 0, jika no 1, cancel 2
+            if (hasil == 0) {
+                PrintJob p = getToolkit().getPrintJob(this, "Report", null);
+                Graphics g = p.getGraphics();
+                g.setFont(new Font("Serif", Font.BOLD, 18));
+                g.drawString("Resi Courier Service", 75, 50);
+                g.drawLine(75, 75, 500, 75);
+                g.setFont(new Font("Serif", Font.BOLD, 12));
+                // g.drawString("Title", Kepinggir, Kebawah);
+                // Sebelah Kiri
+                g.drawString("Kota Asal", 100, 100);
+                g.drawString(" : " + pm.getKotaAsal(), 200, 100);
+                g.drawString("Nomor Paket", 100, 125);
+                g.drawString(" : " + pm.getNomorPaket(), 200, 125);
+                // Sebelah Kiri
+
+                // Sebalah Kanan
+                g.drawString("Kota Tujuan", 350, 100);
+                g.drawString(" : " + pm.getKotaTujuan(), 420, 100);
+                g.drawString("Service", 350, 125);
+                g.drawString(" : " + pm.getJenisPengiriman(), 420, 125);
+                // Sebalah Kanan
+
+                //Dibawah Bagian Pengirim
+                g.drawLine(75, 135, 500, 135);
+                g.setFont(new Font("Serif", Font.BOLD, 14));
+                g.drawString("Pengirim", 100, 150);
+                g.setFont(new Font("Serif", Font.PLAIN, 12));
+                g.drawString("Nama", 100, 170);
+                g.drawString(" : " + pm.getNamaPengirim(), 160, 170);
+                g.drawString("Alamat", 100, 190);
+                g.drawString(" : " + pm.getKotaAsal(), 160, 190);
+                g.drawString("Kota", 100, 210);
+                g.drawString(" : " + pm.getKotaAsal(), 160, 210);
+                g.drawString("Tlp", 100, 230);
+                g.drawString(" : " + pm.getNoTlpPengirim(), 160, 230);
+                //Dibawah Bagian Pengirim Sebelah Kiri
+
+                //Dibawah Bagian Penerima Sebelah Kanan
+                g.setFont(new Font("Serif", Font.BOLD, 14));
+                g.drawString("Penerima", 350, 150);
+                g.setFont(new Font("Serif", Font.PLAIN, 12));
+                g.drawString("Nama", 350, 170);
+                g.drawString(" : " + pm.getNamaPenerima(), 410, 170);
+                g.drawString("Alamat", 350, 190);
+                g.drawString(" : " + pm.getAlamatTujuan(), 410, 190);
+                g.drawString("Kota", 350, 210);
+                g.drawString(" : " + pm.getKotaTujuan(), 410, 210);
+                g.drawString("Tlp", 350, 230);
+                g.drawString(" : " + pm.getNoTlpPenerima(), 410, 230);
+                g.drawLine(75, 250, 500, 250);
+                //Dibawah Bagian Penerima Sebelah Kanan
+
+                // g.drawString("Title", Kepinggir, Kebawah);
+                //Dibawah Bagian Harga
+                g.setFont(new Font("Serif", Font.BOLD, 12));
+                g.drawString("Berat Paket", 320, 270);
+                g.drawString(" : " + pm.getBerat(), 420, 270);
+                g.drawString("Asuransi", 320, 290);
+                g.drawString(" : " + pm.getAsuransi(), 420, 290);
+                g.drawString("Harga Barang", 320, 310);
+                g.drawString(" : " + pm.getHargaBarang(), 420, 310);
+                g.drawString("Pembayaran", 320, 330);
+                g.drawString(" : " + pm.getPembayaran(), 420, 330);
+                g.drawString("Total", 320, 350);
+                g.drawString(" : " + pm.getTotal(), 420, 350);
+                //Dibawah Bagian Harga
+
+                p.end();
+                btnBaru.setVisible(true);
+            } else if (hasil == 1) {
+                btnBaru.setVisible(true);
+            } else {
+                btnBaru.setVisible(false);
+            }
         } else {
-            lblTotal.setText("" + csdao.getHitungPaket(cbxKotaPenerima.getSelectedItem().toString(), cbxLayanan.getSelectedItem().toString(), Integer.parseInt(txtKilogram.getText()), rbtYa.isSelected(), 0.0));
+            JOptionPane.showMessageDialog(rootPane, "Mohon isi berat barang!", "Kesalahann", 2);
         }
-        btnBaru.setVisible(true);
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void rbtYaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtYaItemStateChanged
@@ -658,10 +803,78 @@ public final class CS_view extends javax.swing.JFrame {
 
     private void cbxKotaPenerimaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxKotaPenerimaItemStateChanged
         // TODO add your handling code here:
-        if(!txtNoTlpPenerima.getText().isEmpty())
-        lblHarga.setText("" + csdao.getHarga("" + cbxLayanan.getSelectedItem(), cbxKotaPenerima.getSelectedItem() + ""));
+        if (!txtNoTlpPenerima.getText().isEmpty()) {
+            lblHarga.setText("" + csdao.getHarga("" + cbxLayanan.getSelectedItem(), cbxKotaPenerima.getSelectedItem() + ""));
+        }
         cbxLayanan.setSelectedItem("Reguler");
     }//GEN-LAST:event_cbxKotaPenerimaItemStateChanged
+
+    private void txtKodePosPengirimFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtKodePosPengirimFocusLost
+        // TODO add your handling code here:
+        if (!txtKodePosPengirim.getText().matches("[0-9]*")) {
+            JOptionPane.showMessageDialog(rootPane, "Maaf Inputan Kode Pos Harus Berupa Angka");
+            txtKodePosPengirim.setText("");
+        }
+    }//GEN-LAST:event_txtKodePosPengirimFocusLost
+
+    private void txtKodePosPenerimaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtKodePosPenerimaFocusLost
+        // TODO add your handling code here:
+        if (!txtKodePosPenerima.getText().matches("[0-9]*")) {
+            JOptionPane.showMessageDialog(rootPane, "Maaf Inputan Kode Pos Harus Berupa Angka");
+            txtKodePosPenerima.setText("");
+        }
+    }//GEN-LAST:event_txtKodePosPenerimaFocusLost
+
+    private void txtKilogramFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtKilogramFocusLost
+        // TODO add your handling code here:
+        if (!txtKilogram.getText().matches("[0-9]*")) {
+            JOptionPane.showMessageDialog(rootPane, "Maaf Inputan Berat Harus Berupa Angka");
+            txtKilogram.setText("");
+        }
+    }//GEN-LAST:event_txtKilogramFocusLost
+
+    private void txtPanjangFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtPanjangFocusLost
+        // TODO add your handling code here:
+        if (!txtPanjang.getText().matches("[0-9]*")) {
+            JOptionPane.showMessageDialog(rootPane, "Maaf Inputan Ukuran Panjang Harus Berupa Angka");
+            txtPanjang.setText("");
+        }
+    }//GEN-LAST:event_txtPanjangFocusLost
+
+    private void txtTinggiFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTinggiFocusLost
+        // TODO add your handling code here:
+        if (!txtTinggi.getText().matches("[0-9]*")) {
+            JOptionPane.showMessageDialog(rootPane, "Maaf Inputan Ukuran Tinggi Harus Berupa Angka");
+            txtTinggi.setText("");
+        }
+    }//GEN-LAST:event_txtTinggiFocusLost
+
+    private void txtLebarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtLebarFocusLost
+        // TODO add your handling code here:
+        if (!txtLebar.getText().matches("[0-9]*")) {
+            JOptionPane.showMessageDialog(rootPane, "Maaf Inputan Ukuran Lebar Harus Berupa Angka");
+            txtLebar.setText("");
+        }
+    }//GEN-LAST:event_txtLebarFocusLost
+
+    private void txtHargaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtHargaFocusLost
+        // TODO add your handling code here:
+        if (!txtHarga.getText().matches("[0-9]*")) {
+            JOptionPane.showMessageDialog(rootPane, "Maaf Inputan Harga Barang Harus Berupa Angka");
+            txtHarga.setText("");
+        }
+    }//GEN-LAST:event_txtHargaFocusLost
+
+    private void btnBaruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBaruActionPerformed
+        // TODO add your handling code here:
+        this.Penerima(false);
+        this.dataPaket(false);
+        btnBaru.setVisible(false);
+        txtHarga.setEnabled(false);
+        txtPanjang.setEnabled(false);
+        txtTinggi.setEnabled(false);
+        txtLebar.setEnabled(false);
+    }//GEN-LAST:event_btnBaruActionPerformed
 
     /**
      * @param args the command line arguments
